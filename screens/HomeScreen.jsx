@@ -1,8 +1,9 @@
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { Text, View, StyleSheet, ScrollView, Animated } from "react-native";
 import { TailwindProvider } from "tailwindcss-react-native";
 import * as Speech from "expo-speech";
 import AppButton from "../components/AppButton";
 import { SvgXml } from "react-native-svg";
+import * as React from "react";
 
 function HomeScreen() {
 	const buttons = [
@@ -32,30 +33,53 @@ function HomeScreen() {
 			color: "#ec4899",
 		},
 	];
+
+	const translation = React.useRef(new Animated.Value(-50)).current;
+	const opacity = React.useRef(new Animated.Value(0)).current;
+
+	React.useEffect(() => {
+		Animated.timing(opacity, {
+			toValue: 1,
+			useNativeDriver: true,
+		}).start();
+		Animated.timing(translation, {
+			toValue: 0,
+			useNativeDriver: true,
+		}).start();
+	}, []);
+
 	setTimeout(() => {
 		Speech.speak("Hello there !");
 		Speech.speak("What you wana do ?");
-	}, 500);
+	}, 300);
 
 	return (
 		<TailwindProvider>
-			<View className="">
+			<Animated.View
+				className=""
+				style={{
+					transform: [{ translateY: translation }],
+					opacity: opacity,
+				}}
+			>
 				<Text className="pt-3 px-3 text-2xl mt-5 text-center text-gray-700">
 					Hello there !
 				</Text>
 				<Text className="px-3 text-2xl mx-5 text-center text-gray-700">
 					What you want to do ?
 				</Text>
-			</View>
+			</Animated.View>
 			<ScrollView className="mt-11">
-				{buttons.map((b) => {
+				{buttons.map((b, i) => {
 					return (
-						<AppButton key={b.title}>
-							<View style={style.buttonContainer}>
-								<SvgXml xml={b.icon} width={50} height={40} fill={b.color} />
-								<Text className="text-lg px-3 text-gray-700">{b.title}</Text>
-							</View>
-						</AppButton>
+						<Animated.View key={b.title}>
+							<AppButton index={i}>
+								<View style={style.buttonContainer}>
+									<SvgXml xml={b.icon} width={50} height={40} fill={b.color} />
+									<Text className="text-lg px-3 text-gray-700">{b.title}</Text>
+								</View>
+							</AppButton>
+						</Animated.View>
 					);
 				})}
 			</ScrollView>

@@ -46,19 +46,18 @@ function HomeScreen() {
 			toValue: 0,
 			useNativeDriver: true,
 		}).start();
+		setTimeout(() => {
+			Speech.speak("Hello there !");
+			Speech.speak("What you wana do ?");
+		}, 300);
 	}, []);
-
-	setTimeout(() => {
-		Speech.speak("Hello there !");
-		Speech.speak("What you wana do ?");
-	}, 300);
 
 	return (
 		<TailwindProvider>
 			<Animated.View
 				className=""
 				style={{
-					transform: [{ translateY: translation }],
+					transform: [{ translateX: translation }],
 					opacity: opacity,
 				}}
 			>

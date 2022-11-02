@@ -6,16 +6,18 @@ const AppButton = ({ onPress, children, index }) => {
 	const translation = React.useRef(new Animated.Value(-50)).current;
 	const opacity = React.useRef(new Animated.Value(0)).current;
 
-	setTimeout(() => {
-		Animated.timing(opacity, {
-			toValue: 1,
-			useNativeDriver: true,
-		}).start();
-		Animated.timing(translation, {
-			toValue: 0,
-			useNativeDriver: true,
-		}).start();
-	}, 500 * index);
+	React.useEffect(() => {
+		setTimeout(() => {
+			Animated.timing(opacity, {
+				toValue: 1,
+				useNativeDriver: true,
+			}).start();
+			Animated.timing(translation, {
+				toValue: 0,
+				useNativeDriver: true,
+			}).start();
+		}, 500 * index + 500);
+	}, []);
 
 	return (
 		<Animated.View
